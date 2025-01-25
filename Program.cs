@@ -2,14 +2,16 @@
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
-using var cts = new CancellationTokenSource();
-var bot = new TelegramBotClient("BOT_TOKEN", cancellationToken: cts.Token);
+var token = Environment.GetEnvironmentVariable("TELEGRAM_BOT_TOKEN");
+if (token == null)
+    return;
+
+var bot = new TelegramBotClient(token);
 var me = await bot.GetMe();
 bot.OnMessage += OnMessage;
 
-Console.WriteLine($"@{me.Username} is running... Press Enter to terminate");
-Console.ReadLine();
-cts.Cancel(); // stop the bot
+Console.WriteLine($"@{me.Username} is running...");
+await Task.Delay(-1);
 
 async Task OnMessage(Message msg, UpdateType type)
 {

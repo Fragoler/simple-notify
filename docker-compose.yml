@@ -1,0 +1,3 @@
+services:
+  snote:
+    build: .

@@ -2,7 +2,9 @@
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 
+
 var token = Environment.GetEnvironmentVariable("TELEGRAM_BOT_TOKEN");
+Console.WriteLine($"TOKEN: {token}");
 if (token == null)
     return;
 

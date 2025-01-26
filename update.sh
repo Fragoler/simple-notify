@@ -21,4 +21,4 @@ echo "Working branch " $branch
 git fetch
 git reset --hard origin/$branch
 
-cd $prodDir && docker-compose up -d --build
+cd $prodDir && docker compose up -d --build

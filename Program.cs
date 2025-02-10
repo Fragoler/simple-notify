@@ -1,23 +1,39 @@
-﻿using Telegram.Bot;
-using Telegram.Bot.Types;
-using Telegram.Bot.Types.Enums;
+﻿using SNotefier.TelegramBot;
 
-
-var token = Environment.GetEnvironmentVariable("TELEGRAM_BOT_TOKEN");
-if (token == null)
-    return;
-
-var bot = new TelegramBotClient(token);
-var me = await bot.GetMe();
-bot.OnMessage += OnMessage;
-
-Console.WriteLine($"@{me.Username} is running...");
-await Task.Delay(-1);
-
-async Task OnMessage(Message msg, UpdateType type)
+namespace SNotefier
 {
-    if (msg.Text is null) return;	// we only handle Text messages here
-    Console.WriteLine($"Received {type} '{msg.Text}' in {msg.Chat}");
-    // let's echo back received text in the chat
-    await bot.SendMessage(msg.Chat, $"{msg.From} said: {msg.Text}");
+    internal static class Program
+    {
+        static void Main(string[] args)
+        {
+            Start(args);
+        }
+
+        internal static void Start(string[] args)
+        {
+            var bot = new Bot(GetBotToken(), GetBotUser());
+                        
+            bot.Start();
+
+            Task.Delay(-1).Wait();
+        }
+
+        private static string GetBotToken()
+        {
+            var token = Environment.GetEnvironmentVariable("TELEGRAM_BOT_TOKEN");
+            if (token == null)
+                throw new SystemException("Can't find Bot token in enviroment variables");
+        
+            return token;
+        }
+
+        private static string GetBotUser()
+        {
+            var user = Environment.GetEnvironmentVariable("BOT_USER");
+            if (user == null)
+                throw new SystemException("Can't find Bot user in enviroment variables");
+        
+            return user;
+        }
+    }
 }
